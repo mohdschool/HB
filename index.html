@@ -102,6 +102,12 @@
             50% { text-shadow: 0 0 20px #ffdd00, 0 0 30px #ffdd00, 0 0 40px #ffdd00; }
             100% { text-shadow: 0 0 5px #ffdd00, 0 0 10px #ffdd00, 0 0 15px #ffdd00; }
         }
+
+        #countdown {
+            font-size: 2rem;
+            margin: 20px 0;
+            color: #ffdd00;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -114,7 +120,10 @@
     <div class="buttons">
         <button onclick="showAllStudents()">عرض جميع الأسماء</button>
         <button onclick="showRankedStudents()">عرض المراكز بالتتابع</button>
+        <button onclick="showByRank()">العرض حسب المركز</button>
     </div>
+
+    <div id="countdown"></div>
 
     <table id="studentsTable">
         <thead>
@@ -157,6 +166,7 @@
             });
 
         const tableBody = document.getElementById('studentsBody');
+        const countdownElement = document.getElementById('countdown');
 
         function showAllStudents() {
             clearTable();
@@ -174,6 +184,37 @@
                 }
             }
             showNext();
+        }
+
+        function showByRank() {
+            clearTable();
+            let currentRank = 1;
+
+            function showNextRank() {
+                clearTable();
+                const filteredStudents = students.filter(student => student.rank === currentRank);
+                filteredStudents.forEach(student => addRow(student));
+
+                let countdown = 5;
+                countdownElement.textContent = `سيتم عرض المركز التالي خلال ${countdown} ثواني`;
+
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdown > 0) {
+                        countdownElement.textContent = `سيتم عرض المركز التالي خلال ${countdown} ثواني`;
+                    } else {
+                        clearInterval(countdownInterval);
+                        currentRank++;
+                        if (currentRank <= Math.max(...students.map(s => s.rank))) {
+                            showNextRank();
+                        } else {
+                            countdownElement.textContent = "تم عرض جميع المراكز.";
+                        }
+                    }
+                }, 1000);
+            }
+
+            showNextRank();
         }
 
         function addRow(student) {
