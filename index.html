@@ -46,11 +46,6 @@
             position: relative;
         }
 
-        .greeting-box.right {
-            /* التهنئة على اليمين ثابتة */
-            animation: none;
-        }
-
         .greeting-text {
             position: absolute;
             width: 100%;
@@ -58,12 +53,6 @@
             color: #ffdd00;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
             animation: scrollText 15s linear infinite;
-        }
-
-        .greeting-text.right {
-            /* إيقاف الحركة للتهنئة على اليمين */
-            animation: none;
-            position: static;
         }
 
         @keyframes scrollText {
@@ -78,7 +67,7 @@
             margin: 20px;
         }
 
-        #audioButton, #eventCountdown {
+        #audioButton {
             background-color: #1e3c72;
             color: #ffdd00;
             border: none;
@@ -86,9 +75,10 @@
             font-size: 1.2rem;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none; /* سيتم تفعيله برمجيًا */
         }
 
-        #audioButton:hover, #eventCountdown {
+        #audioButton:hover {
             background-color: #34495e;
         }
 
@@ -157,13 +147,18 @@
 
         /* حاوية الوقت المتبقي */
         .countdown-container {
-            position: absolute;
-            bottom: -50px; /* أسفل مربع النص */
-            right: 0;
             background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .countdown-container p {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #ffdd00;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
@@ -176,23 +171,27 @@
     </audio>
 
     <div class="header-container">
+        <!-- الحاوية على يسار الشعار -->
         <div class="greeting-box">
-            <div class="greeting-text">
-                تولي المدرسة اهتماماً بالغاً بطلبتها المتفوقين في كل الجوانب المتعلقة بالتحصيل الدراسي أو الانضباط السلوكي.<br><br>
-                ونظراً لحصاد نتائج الفصل الدراسي الأول وحصول مجموعة من الطلبة على نتائج عالية أهلتهم ليكونوا من أوائل الطلبة بالمدرسة فقد تقرر إقامة حفل مدرسي للطلبة الأوائل على مستوى جميع الفصول، وتكريم المتفوقين بجوائز تشجيعية تزيد من دافعية التعلم لديهم، وتعزز مكانتهم العلمية بين زملائهم الطلبة، وذلك يوم الخميس القادم، 20 / 2 / 2025 م بطابور الصباح.<br><br>
-                وتبارك إدارة المدرسة والكادر التدريسي لكل الطلبة المتفوقين، وترجو لهم دوام التوفيق والنجاح.
+            <div class="countdown-container">
+                <p>حفل تكريم الطلبة المجيدين بتاريخ 20/2/2025م</p>
+                <div id="eventCountdown"></div>
             </div>
         </div>
+
+        <!-- الشعار -->
         <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
-        <div class="greeting-box right">
-            <div class="greeting-text right">تهنئ مدرسة محمد بن سليمان الغافري طلابها المجيدين وتتمنى لهم دوام التفوق والنجاح في مسيرتهم العلمية والمستقبلية.</div>
+
+        <!-- الحاوية على يمين الشعار -->
+        <div class="greeting-box">
+            <div class="greeting-text">
+                تهنئ مدرسة محمد بن سليمان الغافري طلابها المجيدين وتتمنى لهم دوام التفوق والنجاح في مسيرتهم العلمية والمستقبلية.
+            </div>
         </div>
-        <!-- حاوية الوقت المتبقي -->
-        <div class="countdown-container" id="eventCountdown"></div>
     </div>
 
     <div class="controls">
-        <button id="audioButton" onclick="toggleAudio()">تشغيل/إيقاف الموسيقى</button>
+        <button id="audioButton">تشغيل/إيقاف الموسيقى</button>
     </div>
 
     <h1>لوحة الشرف للطلبة المجيدين</h1>
@@ -200,7 +199,7 @@
 
     <div class="buttons">
         <button onclick="fetchAndShowStudents()">عرض جميع الأسماء</button>
-        <button onclick="showStudentsByRank()">عرض حسب المركز</button>
+        <button onclick="showStudentsByRank()">عرض الأسماء حسب المركز</button>
     </div>
 
     <table id="studentsTable">
@@ -221,18 +220,13 @@
 
     <script>
         const backgroundMusic = document.getElementById('backgroundMusic');
+        const audioButton = document.getElementById('audioButton');
 
-        function toggleAudio() {
-            if (backgroundMusic.paused) {
-                backgroundMusic.play();
-            } else {
-                backgroundMusic.pause();
-            }
-        }
-
-        let students = [];
-
+        // تشغيل الموسيقى عند الضغط على زر "عرض جميع الأسماء"
         function fetchAndShowStudents() {
+            backgroundMusic.play();
+            audioButton.style.display = 'block'; // إظهار زر التحكم بالموسيقى
+
             fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv')
                 .then(response => response.text())
                 .then(data => {
@@ -244,6 +238,18 @@
                     displayStudents(students);
                 });
         }
+
+        function toggleAudio() {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+                audioButton.textContent = 'إيقاف الموسيقى';
+            } else {
+                backgroundMusic.pause();
+                audioButton.textContent = 'تشغيل الموسيقى';
+            }
+        }
+
+        audioButton.addEventListener('click', toggleAudio);
 
         function displayStudents(studentsList) {
             const studentsBody = document.getElementById('studentsBody');
@@ -291,7 +297,7 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            eventCountdown.innerHTML = `حفل التكريم بعد: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة، ${seconds} ثانية`;
+            eventCountdown.innerHTML = `الوقت المتبقي: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة، ${seconds} ثانية`;
 
             if (distance < 0) {
                 eventCountdown.innerHTML = "تم بدء الحفل!";
