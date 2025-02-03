@@ -182,6 +182,8 @@
 
     <div class="buttons">
         <button onclick="fetchAndShowStudents()">عرض جميع الأسماء</button>
+        <button onclick="showStudentsByRank()">عرض الأسماء بالتتابع حسب المركز</button>
+        <button onclick="showStudentsWithTimer()">عرض الأسماء مع عداد زمني</button>
     </div>
 
     <table id="studentsTable">
@@ -211,30 +213,69 @@
             }
         }
 
+        let students = [];
+
         function fetchAndShowStudents() {
             fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv')
                 .then(response => response.text())
                 .then(data => {
                     const rows = data.split('\n').slice(1);
-                    const studentsBody = document.getElementById('studentsBody');
-                    studentsBody.innerHTML = '';
-
-                    rows.forEach(row => {
+                    students = rows.map(row => {
                         const cols = row.split(',');
-                        if (cols.length >= 6) {
-                            studentsBody.innerHTML += `
-                                <tr>
-                                    <td><img src="${cols[0]}" alt="صورة الطالب" style="width: 50px; height: 50px; border-radius: 50%;"></td>
-                                    <td>${cols[1]}</td>
-                                    <td>${cols[2]}</td>
-                                    <td>${cols[3]}</td>
-                                    <td>${cols[4]}</td>
-                                    <td>${cols[5]}</td>
-                                </tr>
-                            `;
-                        }
+                        return { image: cols[0], name: cols[1], grade: cols[2], total: cols[3], percentage: cols[4], rank: cols[5] };
                     });
+                    displayStudents(students);
                 });
+        }
+
+        function displayStudents(studentsList) {
+            const studentsBody = document.getElementById('studentsBody');
+            studentsBody.innerHTML = '';
+
+            studentsList.forEach(student => {
+                studentsBody.innerHTML += `
+                    <tr>
+                        <td><img src="${student.image}" alt="صورة الطالب" style="width: 50px; height: 50px; border-radius: 50%;"></td>
+                        <td>${student.name}</td>
+                        <td>${student.grade}</td>
+                        <td>${student.total}</td>
+                        <td>${student.percentage}</td>
+                        <td>${student.rank}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function showStudentsByRank() {
+            let rank = 1;
+            const studentsBody = document.getElementById('studentsBody');
+            studentsBody.innerHTML = '';
+
+            const interval = setInterval(() => {
+                const rankedStudents = students.filter(student => student.rank == rank);
+                if (rankedStudents.length === 0 && rank > students.length) {
+                    clearInterval(interval);
+                } else {
+                    displayStudents(rankedStudents);
+                    rank++;
+                }
+            }, 5000);
+        }
+
+        function showStudentsWithTimer() {
+            let rank = 1;
+            const studentsBody = document.getElementById('studentsBody');
+            studentsBody.innerHTML = '';
+
+            const interval = setInterval(() => {
+                const rankedStudents = students.filter(student => student.rank == rank);
+                if (rankedStudents.length > 0) {
+                    displayStudents(rankedStudents);
+                } else if (rank > students.length) {
+                    clearInterval(interval);
+                }
+                rank++;
+            }, 5000);
         }
 
         const eventDate = new Date('February 20, 2025 07:10:00').getTime();
