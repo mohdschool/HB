@@ -9,78 +9,93 @@
             font-family: 'Tajawal', sans-serif;
             direction: rtl;
             text-align: center;
-            background-color: #f0f4f8;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            color: #ffffff;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
         h1 {
-            color: #2c3e50;
-            font-size: 3rem;
+            color: #ffdd00;
+            font-size: 3.5rem;
             margin: 20px 0 10px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
 
         h2 {
-            color: #34495e;
-            font-size: 1.8rem;
+            color: #ffdd00;
+            font-size: 2rem;
             margin-bottom: 30px;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
         }
 
         .logo {
             display: block;
             margin: 20px auto;
-            width: 120px;
+            width: 150px;
             height: auto;
             border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(255, 221, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
         }
 
         table {
             width: 85%;
             margin: 20px auto;
             border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             overflow: hidden;
         }
 
         th, td {
-            padding: 15px;
+            padding: 20px;
             text-align: center;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 1.3rem;
         }
 
         th {
-            background-color: #3498db;
-            color: #fff;
-            font-size: 1.2rem;
+            background-color: rgba(255, 221, 0, 0.8);
+            color: #1e3c72;
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
         }
 
         tr:nth-child(even) {
-            background-color: #f8f9fa;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         tr td:nth-child(1) {
             font-weight: bold;
-            color: #2c3e50;
-            font-size: 1.1rem;
+            color: #ffdd00;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
         }
 
-        .back-button {
-            display: inline-block;
-            margin: 20px 0;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
+        tr {
+            transition: background-color 0.5s ease, transform 0.3s ease;
         }
 
-        .back-button:hover {
-            background-color: #2980b9;
+        tr:hover {
+            background-color: rgba(255, 221, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        @keyframes glowing {
+            0% { text-shadow: 0 0 10px #ffdd00, 0 0 20px #ffdd00, 0 0 30px #ffdd00; }
+            50% { text-shadow: 0 0 20px #ffdd00, 0 0 30px #ffdd00, 0 0 40px #ffdd00; }
+            100% { text-shadow: 0 0 10px #ffdd00, 0 0 20px #ffdd00, 0 0 30px #ffdd00; }
+        }
+
+        tr td:nth-child(1) {
+            animation: glowing 1.5s infinite;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
@@ -105,8 +120,6 @@
             <!-- سيتم إدراج البيانات هنا بواسطة JavaScript -->
         </tbody>
     </table>
-
-    <a href="#" class="back-button">العودة إلى الصفحة الرئيسية</a>
 
     <script>
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv';
