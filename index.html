@@ -20,6 +20,21 @@
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
 
+        .logo {
+            display: block;
+            margin: 20px auto;
+            width: 150px;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(255, 221, 0, 0.6);
+            animation: rotateLogo 5s infinite linear;
+        }
+
+        @keyframes rotateLogo {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         table {
             width: 85%;
             margin: 20px auto;
@@ -53,11 +68,26 @@
             transform: translateX(0);
             opacity: 1;
         }
+
+        tr td:nth-child(2) {
+            font-weight: bold;
+            color: #ffdd00;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px #ffdd00, 0 0 20px #ffdd00, 0 0 30px #ffdd00;
+            animation: glowing 2s infinite ease-in-out;
+        }
+
+        @keyframes glowing {
+            0% { text-shadow: 0 0 5px #ffdd00, 0 0 10px #ffdd00, 0 0 15px #ffdd00; }
+            50% { text-shadow: 0 0 20px #ffdd00, 0 0 30px #ffdd00, 0 0 40px #ffdd00; }
+            100% { text-shadow: 0 0 5px #ffdd00, 0 0 10px #ffdd00, 0 0 15px #ffdd00; }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
     <h1>لوحة الشرف للطلبة المجيدين</h1>
     <h2>مدرسة محمد بن سليمان الغافري - الفصل الدراسي الأول 2024/2025</h2>
 
@@ -91,7 +121,7 @@
                     if (values.length >= 6) {
                         const row = `
                             <tr>
-                                <td><img src="${values[0]}" alt="صورة الطالب" style="width: 50px; height: 50px; border-radius: 50%;"></td>
+                                <td><img src="${values[0]}" alt="صورة الطالب" style="width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 0 10px rgba(255, 221, 0, 0.7);"></td>
                                 <td>${values[1]}</td>
                                 <td>${values[2]}</td>
                                 <td>${values[3]}</td>
