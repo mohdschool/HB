@@ -86,6 +86,26 @@
             background-color: #34495e;
         }
 
+        .buttons {
+            margin: 20px 0;
+        }
+
+        .buttons button {
+            background-color: #ffdd00;
+            color: #1e3c72;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 0 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons button:hover {
+            background-color: #e6c200;
+        }
+
         table {
             width: 85%;
             margin: 20px auto;
@@ -115,7 +135,7 @@
             background-color: rgba(255, 255, 255, 0.1);
         }
 
-        tr td:nth-child(2) {
+        tr td:nth-child(3) {
             font-weight: bold;
             color: #ffdd00;
             font-size: 1.5rem;
@@ -160,6 +180,10 @@
     <h1>لوحة الشرف للطلبة المجيدين</h1>
     <h2>مدرسة محمد بن سليمان الغافري - الفصل الدراسي الأول 2024/2025</h2>
 
+    <div class="buttons">
+        <button onclick="fetchAndShowStudents()">عرض جميع الأسماء</button>
+    </div>
+
     <table id="studentsTable">
         <thead>
             <tr>
@@ -187,7 +211,32 @@
             }
         }
 
-        // إعداد العداد التنازلي
+        function fetchAndShowStudents() {
+            fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv')
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split('\n').slice(1);
+                    const studentsBody = document.getElementById('studentsBody');
+                    studentsBody.innerHTML = '';
+
+                    rows.forEach(row => {
+                        const cols = row.split(',');
+                        if (cols.length >= 6) {
+                            studentsBody.innerHTML += `
+                                <tr>
+                                    <td><img src="${cols[0]}" alt="صورة الطالب" style="width: 50px; height: 50px; border-radius: 50%;"></td>
+                                    <td>${cols[1]}</td>
+                                    <td>${cols[2]}</td>
+                                    <td>${cols[3]}</td>
+                                    <td>${cols[4]}</td>
+                                    <td>${cols[5]}</td>
+                                </tr>
+                            `;
+                        }
+                    });
+                });
+        }
+
         const eventDate = new Date('February 20, 2025 07:10:00').getTime();
         const eventCountdown = document.getElementById('eventCountdown');
 
