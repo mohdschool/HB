@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الشرف - مدرسة محمد بن سليمان الغافري</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            direction: rtl;
+            text-align: center;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 3rem;
+            margin: 20px 0 10px;
+        }
+
+        h2 {
+            color: #34495e;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: block;
+            margin: 20px auto;
+            width: 120px;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 85%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr td:nth-child(1) {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
+    <h1>لوحة الشرف للطلبة المجيدين</h1>
+    <h2>مدرسة محمد بن سليمان الغافري - الفصل الدراسي الأول 2024/2025</h2>
+
+    <table id="studentsTable">
+        <thead>
+            <tr>
+                <th>اسم الطالب</th>
+                <th>الصف الدراسي</th>
+                <th>المجموع</th>
+                <th>النسبة المئوية</th>
+                <th>المركز</th>
+            </tr>
+        </thead>
+        <tbody id="studentsBody">
+            <!-- سيتم إدراج البيانات هنا بواسطة JavaScript -->
+        </tbody>
+    </table>
+
+    <a href="#" class="back-button">العودة إلى الصفحة الرئيسية</a>
+
+    <script>
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv';
+
+        let students = [];
+        let currentRankIndex = 0;
+
+        fetch(csvUrl)
+            .then(response => response.text())
+            .then(data => {
+                const rows = data.trim().split('\n');
+                const headers = rows[0].split(',').map(header => header.trim());
+
+                for (let i = 1; i < rows.length; i++) {
+                    const values = rows[i].split(',').map(value => value.trim());
+                    if (values.length === headers.length) {
+                        students.push({
+                            name: values[0],
+                            grade: values[1],
+                            total: values[2],
+                            percentage: values[3],
+                            rank: parseInt(values[4])
+                        });
+                    }
+                }
+
+                students.sort((a, b) => a.rank - b.rank);
+
+                showNextRank();
+            });
+
+        const tableBody = document.getElementById('studentsBody');
+
+        function showStudentsByRank(rank) {
+            tableBody.innerHTML = '';
+
+            const filteredStudents = students.filter(student => student.rank === rank);
+            if (filteredStudents.length > 0) {
+                filteredStudents.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.name}</td>
+                        <td>${student.grade}</td>
+                        <td>${student.total}</td>
+                        <td>${student.percentage}</td>
+                        <td>${student.rank}</td>
+                    `;
+                    row.style.opacity = 0;
+                    tableBody.appendChild(row);
+
+                    setTimeout(() => {
+                        row.style.transition = 'opacity 1s ease';
+                        row.style.opacity = 1;
+                    }, 100);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="5">لا يوجد طلاب في هذا المركز</td></tr>';
+            }
+        }
+
+        function showNextRank() {
+            const uniqueRanks = [...new Set(students.map(student => student.rank))];
+
+            if (currentRankIndex < uniqueRanks.length) {
+                showStudentsByRank(uniqueRanks[currentRankIndex]);
+                currentRankIndex++;
+            } else {
+                clearInterval(interval);
+            }
+        }
+
+        const interval = setInterval(showNextRank, 5000);
+    </script>
+</body>
+</html>
