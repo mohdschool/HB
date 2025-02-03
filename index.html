@@ -31,7 +31,7 @@
         .header-container {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             padding: 20px;
         }
 
@@ -49,10 +49,10 @@
         .greeting-text {
             position: absolute;
             width: 100%;
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #ffdd00;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-            animation: scrollText 10s linear infinite;
+            animation: scrollText 15s linear infinite;
         }
 
         @keyframes scrollText {
@@ -65,38 +65,24 @@
             100% { transform: rotate(360deg); }
         }
 
-        .buttons {
-            margin: 20px 0;
+        .controls {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px;
         }
 
-        .buttons button {
-            background-color: #ffdd00;
-            color: #1e3c72;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin: 0 10px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .buttons button:hover {
-            background-color: #e6c200;
-        }
-
-        #audioButton {
+        #audioButton, #eventCountdown {
             background-color: #1e3c72;
             color: #ffdd00;
             border: none;
             padding: 10px 20px;
             font-size: 1.2rem;
-            cursor: pointer;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        #audioButton:hover {
+        #audioButton:hover, #eventCountdown {
             background-color: #34495e;
         }
 
@@ -142,12 +128,6 @@
             50% { text-shadow: 0 0 20px #ffdd00, 0 0 30px #ffdd00, 0 0 40px #ffdd00; }
             100% { text-shadow: 0 0 5px #ffdd00, 0 0 10px #ffdd00, 0 0 15px #ffdd00; }
         }
-
-        #countdown {
-            font-size: 1.5rem;
-            margin-top: 20px;
-            color: #ffdd00;
-        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -159,23 +139,26 @@
     </audio>
 
     <div class="header-container">
-        <button id="audioButton" onclick="toggleAudio()">تشغيل/إيقاف الموسيقى</button>
+        <div class="greeting-box">
+            <div class="greeting-text">
+                تولي المدرسة اهتماماً بالغاً بطلبتها المتفوقين في كل الجوانب المتعلقة بالتحصيل الدراسي أو الانضباط السلوكي.<br><br>
+                ونظراً لحصاد نتائج الفصل الدراسي الأول وحصول مجموعة من الطلبة على نتائج عالية أهلتهم ليكونوا من أوائل الطلبة بالمدرسة فقد تقرر إقامة حفل مدرسي للطلبة الأوائل على مستوى جميع الفصول، وتكريم المتفوقين بجوائز تشجيعية تزيد من دافعية التعلم لديهم، وتعزز مكانتهم العلمية بين زملائهم الطلبة، وذلك يوم الخميس القادم، 20 / 2 / 2025 م بطابور الصباح.<br><br>
+                وتبارك إدارة المدرسة والكادر التدريسي لكل الطلبة المتفوقين، وترجو لهم دوام التوفيق والنجاح.
+            </div>
+        </div>
         <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
         <div class="greeting-box">
             <div class="greeting-text">تهنئ مدرسة محمد بن سليمان الغافري طلابها المجيدين وتتمنى لهم دوام التفوق والنجاح في مسيرتهم العلمية والمستقبلية.</div>
         </div>
     </div>
 
-    <h1>لوحة الشرف للطلبة المجيدين</h1>
-    <h2>مدرسة محمد بن سليمان الغافري - الفصل الدراسي الأول 2024/2025</h2>
-
-    <div class="buttons">
-        <button onclick="showAllStudents()">عرض جميع الأسماء</button>
-        <button onclick="showRankedStudents()">عرض المراكز بالتتابع</button>
-        <button onclick="showByRank()">العرض حسب المركز</button>
+    <div class="controls">
+        <div id="eventCountdown"></div>
+        <button id="audioButton" onclick="toggleAudio()">تشغيل/إيقاف الموسيقى</button>
     </div>
 
-    <div id="countdown"></div>
+    <h1>لوحة الشرف للطلبة المجيدين</h1>
+    <h2>مدرسة محمد بن سليمان الغافري - الفصل الدراسي الأول 2024/2025</h2>
 
     <table id="studentsTable">
         <thead>
@@ -203,6 +186,26 @@
                 backgroundMusic.pause();
             }
         }
+
+        // إعداد العداد التنازلي
+        const eventDate = new Date('February 20, 2025 07:10:00').getTime();
+        const eventCountdown = document.getElementById('eventCountdown');
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            eventCountdown.innerHTML = `الوقت المتبقي حتى حفل التكريم: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة، ${seconds} ثانية`;
+
+            if (distance < 0) {
+                eventCountdown.innerHTML = "تم بدء الحفل!";
+            }
+        }, 1000);
     </script>
 </body>
 </html>
