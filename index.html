@@ -25,7 +25,6 @@
             height: auto;
             border-radius: 50%;
             box-shadow: 0 4px 20px rgba(255, 221, 0, 0.6);
-            /* تم إزالة دوران الشعار */
         }
 
         .header-container {
@@ -33,6 +32,7 @@
             justify-content: space-between;
             align-items: flex-start;
             padding: 20px;
+            position: relative;
         }
 
         .greeting-box {
@@ -46,6 +46,11 @@
             position: relative;
         }
 
+        .greeting-box.right {
+            /* التهنئة على اليمين ثابتة */
+            animation: none;
+        }
+
         .greeting-text {
             position: absolute;
             width: 100%;
@@ -53,6 +58,12 @@
             color: #ffdd00;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
             animation: scrollText 15s linear infinite;
+        }
+
+        .greeting-text.right {
+            /* إيقاف الحركة للتهنئة على اليمين */
+            animation: none;
+            position: static;
         }
 
         @keyframes scrollText {
@@ -143,6 +154,17 @@
             50% { text-shadow: 0 0 20px #ffdd00, 0 0 30px #ffdd00, 0 0 40px #ffdd00; }
             100% { text-shadow: 0 0 5px #ffdd00, 0 0 10px #ffdd00, 0 0 15px #ffdd00; }
         }
+
+        /* حاوية الوقت المتبقي */
+        .countdown-container {
+            position: absolute;
+            bottom: -50px; /* أسفل مربع النص */
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -162,13 +184,14 @@
             </div>
         </div>
         <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
-        <div class="greeting-box">
-            <div class="greeting-text">تهنئ مدرسة محمد بن سليمان الغافري طلابها المجيدين وتتمنى لهم دوام التفوق والنجاح في مسيرتهم العلمية والمستقبلية.</div>
+        <div class="greeting-box right">
+            <div class="greeting-text right">تهنئ مدرسة محمد بن سليمان الغافري طلابها المجيدين وتتمنى لهم دوام التفوق والنجاح في مسيرتهم العلمية والمستقبلية.</div>
         </div>
+        <!-- حاوية الوقت المتبقي -->
+        <div class="countdown-container" id="eventCountdown"></div>
     </div>
 
     <div class="controls">
-        <div id="eventCountdown"></div>
         <button id="audioButton" onclick="toggleAudio()">تشغيل/إيقاف الموسيقى</button>
     </div>
 
@@ -177,8 +200,7 @@
 
     <div class="buttons">
         <button onclick="fetchAndShowStudents()">عرض جميع الأسماء</button>
-        <button onclick="showStudentsByRank()">عرض الأسماء بالتتابع حسب المركز</button>
-        <!-- تم حذف زر "عرض الأسماء مع عداد زمني" -->
+        <button onclick="showStudentsByRank()">عرض حسب المركز</button>
     </div>
 
     <table id="studentsTable">
@@ -269,7 +291,7 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            eventCountdown.innerHTML = `الوقت المتبقي حتى حفل التكريم: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة، ${seconds} ثانية`;
+            eventCountdown.innerHTML = `حفل التكريم بعد: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة، ${seconds} ثانية`;
 
             if (distance < 0) {
                 eventCountdown.innerHTML = "تم بدء الحفل!";
