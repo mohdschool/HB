@@ -25,7 +25,7 @@
             height: auto;
             border-radius: 50%;
             box-shadow: 0 4px 20px rgba(255, 221, 0, 0.6);
-            animation: rotateLogo 5s infinite linear;
+            /* تم إزالة دوران الشعار */
         }
 
         .header-container {
@@ -58,11 +58,6 @@
         @keyframes scrollText {
             0% { top: 100%; }
             100% { top: -100%; }
-        }
-
-        @keyframes rotateLogo {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .controls {
@@ -183,7 +178,7 @@
     <div class="buttons">
         <button onclick="fetchAndShowStudents()">عرض جميع الأسماء</button>
         <button onclick="showStudentsByRank()">عرض الأسماء بالتتابع حسب المركز</button>
-        <button onclick="showStudentsWithTimer()">عرض الأسماء مع عداد زمني</button>
+        <!-- تم حذف زر "عرض الأسماء مع عداد زمني" -->
     </div>
 
     <table id="studentsTable">
@@ -259,22 +254,6 @@
                     displayStudents(rankedStudents);
                     rank++;
                 }
-            }, 5000);
-        }
-
-        function showStudentsWithTimer() {
-            let rank = 1;
-            const studentsBody = document.getElementById('studentsBody');
-            studentsBody.innerHTML = '';
-
-            const interval = setInterval(() => {
-                const rankedStudents = students.filter(student => student.rank == rank);
-                if (rankedStudents.length > 0) {
-                    displayStudents(rankedStudents);
-                } else if (rank > students.length) {
-                    clearInterval(interval);
-                }
-                rank++;
             }, 5000);
         }
 
