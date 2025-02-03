@@ -35,6 +35,26 @@
             100% { transform: rotate(360deg); }
         }
 
+        .buttons {
+            margin: 20px 0;
+        }
+
+        .buttons button {
+            background-color: #ffdd00;
+            color: #1e3c72;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 0 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons button:hover {
+            background-color: #e6c200;
+        }
+
         table {
             width: 85%;
             margin: 20px auto;
@@ -91,6 +111,11 @@
     <h1>لوحة الشرف للطلبة المجيدين</h1>
     <h2>مدرسة محمد بن سليمان الغافري - الفصل الدراسي الأول 2024/2025</h2>
 
+    <div class="buttons">
+        <button onclick="showAllStudents()">عرض جميع الأسماء</button>
+        <button onclick="showRankedStudents()">عرض المراكز بالتتابع</button>
+    </div>
+
     <table id="studentsTable">
         <thead>
             <tr>
@@ -109,30 +134,64 @@
 
     <script>
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv';
+        let students = [];
 
         fetch(csvUrl)
             .then(response => response.text())
             .then(data => {
                 const rows = data.trim().split('\n');
-                const tableBody = document.getElementById('studentsBody');
 
                 for (let i = 1; i < rows.length; i++) {
                     const values = rows[i].split(',').map(value => value.trim());
                     if (values.length >= 6) {
-                        const row = `
-                            <tr>
-                                <td><img src="${values[0]}" alt="صورة الطالب" style="width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 0 10px rgba(255, 221, 0, 0.7);"></td>
-                                <td>${values[1]}</td>
-                                <td>${values[2]}</td>
-                                <td>${values[3]}</td>
-                                <td>${values[4]}</td>
-                                <td>${values[5]}</td>
-                            </tr>
-                        `;
-                        tableBody.innerHTML += row;
+                        students.push({
+                            image: values[0],
+                            name: values[1],
+                            grade: values[2],
+                            total: values[3],
+                            percentage: values[4],
+                            rank: parseInt(values[5])
+                        });
                     }
                 }
             });
+
+        const tableBody = document.getElementById('studentsBody');
+
+        function showAllStudents() {
+            clearTable();
+            students.forEach(student => addRow(student));
+        }
+
+        function showRankedStudents() {
+            clearTable();
+            let index = 0;
+            function showNext() {
+                if (index < students.length) {
+                    addRow(students[index]);
+                    index++;
+                    setTimeout(showNext, 5000);
+                }
+            }
+            showNext();
+        }
+
+        function addRow(student) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><img src="${student.image}" alt="صورة الطالب" style="width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 0 10px rgba(255, 221, 0, 0.7);"></td>
+                <td>${student.name}</td>
+                <td>${student.grade}</td>
+                <td>${student.total}</td>
+                <td>${student.percentage}</td>
+                <td>${student.rank}</td>
+            `;
+            tableBody.appendChild(row);
+        }
+
+        function clearTable() {
+            tableBody.innerHTML = '';
+        }
     </script>
 </body>
 </html>
