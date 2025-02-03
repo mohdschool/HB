@@ -37,11 +37,12 @@
             height: auto;
             border-radius: 50%;
             box-shadow: 0 4px 20px rgba(255, 221, 0, 0.6);
-            transition: transform 0.3s ease;
+            animation: rotateLogo 5s infinite linear;
         }
 
-        .logo:hover {
-            transform: scale(1.1);
+        @keyframes rotateLogo {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         table {
@@ -72,20 +73,23 @@
             background-color: rgba(255, 255, 255, 0.1);
         }
 
-        tr td:nth-child(1) {
+        tr td:nth-child(2) {
             font-weight: bold;
             color: #ffdd00;
             font-size: 1.5rem;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+            animation: glowing 1.5s infinite;
         }
 
         tr {
-            transition: background-color 0.5s ease, transform 0.3s ease;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.8s ease, opacity 0.8s ease;
         }
 
-        tr:hover {
-            background-color: rgba(255, 221, 0, 0.2);
-            transform: scale(1.02);
+        tr.show {
+            transform: translateX(0);
+            opacity: 1;
         }
 
         @keyframes glowing {
@@ -94,21 +98,50 @@
             100% { text-shadow: 0 0 10px #ffdd00, 0 0 20px #ffdd00, 0 0 30px #ffdd00; }
         }
 
-        tr td:nth-child(1) {
-            animation: glowing 1.5s infinite;
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3;
+            animation: twinkle 5s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.4; }
+            100% { opacity: 0.2; }
+        }
+
+        #countdown {
+            font-size: 2rem;
+            color: #ffdd00;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <audio autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mp3">
+        متصفحك لا يدعم تشغيل الصوت.
+    </audio>
+
     <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
     <h1>لوحة الشرف للطلبة المجيدين</h1>
     <h2>مدرسة محمد بن سليمان الغافري - الفصل الدراسي الأول 2024/2025</h2>
 
+    <div id="countdown"></div>
+
     <table id="studentsTable">
         <thead>
             <tr>
+                <th>الصورة</th>
                 <th>اسم الطالب</th>
                 <th>الصف الدراسي</th>
                 <th>المجموع</th>
@@ -123,9 +156,9 @@
 
     <script>
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv';
+        const soundEffect = new Audio('https://www.soundjay.com/buttons/sounds/button-29.mp3');
 
         let students = [];
-        let currentRankIndex = 0;
 
         fetch(csvUrl)
             .then(response => response.text())
@@ -146,52 +179,36 @@
                     }
                 }
 
-                students.sort((a, b) => a.rank - b.rank);
-
-                showNextRank();
+                showAllStudents();
             });
 
         const tableBody = document.getElementById('studentsBody');
 
-        function showStudentsByRank(rank) {
+        function playSound() {
+            soundEffect.play();
+        }
+
+        function showAllStudents() {
             tableBody.innerHTML = '';
 
-            const filteredStudents = students.filter(student => student.rank === rank);
-            if (filteredStudents.length > 0) {
-                filteredStudents.forEach(student => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${student.name}</td>
-                        <td>${student.grade}</td>
-                        <td>${student.total}</td>
-                        <td>${student.percentage}</td>
-                        <td>${student.rank}</td>
-                    `;
-                    row.style.opacity = 0;
-                    tableBody.appendChild(row);
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="https://via.placeholder.com/50" alt="صورة الطالب" style="border-radius: 50%; box-shadow: 0 0 10px rgba(255, 221, 0, 0.7);"></td>
+                    <td>${student.name}</td>
+                    <td>${student.grade}</td>
+                    <td>${student.total}</td>
+                    <td>${student.percentage}</td>
+                    <td>${student.rank}</td>
+                `;
+                tableBody.appendChild(row);
 
-                    setTimeout(() => {
-                        row.style.transition = 'opacity 1s ease';
-                        row.style.opacity = 1;
-                    }, 100);
-                });
-            } else {
-                tableBody.innerHTML = '<tr><td colspan="5">لا يوجد طلاب في هذا المركز</td></tr>';
-            }
+                setTimeout(() => {
+                    row.classList.add('show');
+                    playSound();
+                }, 100);
+            });
         }
-
-        function showNextRank() {
-            const uniqueRanks = [...new Set(students.map(student => student.rank))];
-
-            if (currentRankIndex < uniqueRanks.length) {
-                showStudentsByRank(uniqueRanks[currentRankIndex]);
-                currentRankIndex++;
-            } else {
-                clearInterval(interval);
-            }
-        }
-
-        const interval = setInterval(showNextRank, 5000);
     </script>
 </body>
 </html>
