@@ -55,6 +55,22 @@
             background-color: #e6c200;
         }
 
+        #audioButton {
+            background-color: #1e3c72;
+            color: #ffdd00;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #audioButton:hover {
+            background-color: #34495e;
+        }
+
         table {
             width: 85%;
             margin: 20px auto;
@@ -84,11 +100,6 @@
             background-color: rgba(255, 255, 255, 0.1);
         }
 
-        tr.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
         tr td:nth-child(2) {
             font-weight: bold;
             color: #ffdd00;
@@ -113,10 +124,12 @@
 </head>
 <body>
 
-    <audio id="backgroundMusic" autoplay loop>
+    <audio id="backgroundMusic">
         <source src="https://www.bensound.com/bensound-music/bensound-epic.mp3" type="audio/mp3">
         متصفحك لا يدعم تشغيل الصوت.
     </audio>
+
+    <button id="audioButton" onclick="toggleAudio()">تشغيل/إيقاف الموسيقى</button>
 
     <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
     <h1>لوحة الشرف للطلبة المجيدين</h1>
@@ -171,6 +184,15 @@
 
         const tableBody = document.getElementById('studentsBody');
         const countdownDisplay = document.getElementById('countdown');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+
+        function toggleAudio() {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+            } else {
+                backgroundMusic.pause();
+            }
+        }
 
         function showAllStudents() {
             clearTable();
