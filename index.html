@@ -21,13 +21,43 @@
         }
 
         .logo {
-            display: block;
-            margin: 20px auto;
             width: 150px;
             height: auto;
             border-radius: 50%;
             box-shadow: 0 4px 20px rgba(255, 221, 0, 0.6);
             animation: rotateLogo 5s infinite linear;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .greeting-box {
+            width: 300px;
+            height: 150px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ffdd00;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .greeting-text {
+            position: absolute;
+            width: 100%;
+            font-size: 1.2rem;
+            color: #ffdd00;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            animation: scrollText 10s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% { top: 100%; }
+            100% { top: -100%; }
         }
 
         @keyframes rotateLogo {
@@ -62,7 +92,6 @@
             padding: 10px 20px;
             font-size: 1.2rem;
             cursor: pointer;
-            margin: 20px 0;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -129,9 +158,14 @@
         متصفحك لا يدعم تشغيل الصوت.
     </audio>
 
-    <button id="audioButton" onclick="toggleAudio()">تشغيل/إيقاف الموسيقى</button>
+    <div class="header-container">
+        <button id="audioButton" onclick="toggleAudio()">تشغيل/إيقاف الموسيقى</button>
+        <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
+        <div class="greeting-box">
+            <div class="greeting-text">تهنئ مدرسة محمد بن سليمان الغافري طلابها المجيدين وتتمنى لهم دوام التفوق والنجاح في مسيرتهم العلمية والمستقبلية.</div>
+        </div>
+    </div>
 
-    <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
     <h1>لوحة الشرف للطلبة المجيدين</h1>
     <h2>مدرسة محمد بن سليمان الغافري - الفصل الدراسي الأول 2024/2025</h2>
 
@@ -160,30 +194,6 @@
     </table>
 
     <script>
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv';
-        let students = [];
-
-        fetch(csvUrl)
-            .then(response => response.text())
-            .then(data => {
-                const rows = data.trim().split('\n');
-                for (let i = 1; i < rows.length; i++) {
-                    const values = rows[i].split(',').map(value => value.trim());
-                    if (values.length >= 6) {
-                        students.push({
-                            image: values[0],
-                            name: values[1],
-                            grade: values[2],
-                            total: values[3],
-                            percentage: values[4],
-                            rank: parseInt(values[5])
-                        });
-                    }
-                }
-            });
-
-        const tableBody = document.getElementById('studentsBody');
-        const countdownDisplay = document.getElementById('countdown');
         const backgroundMusic = document.getElementById('backgroundMusic');
 
         function toggleAudio() {
@@ -192,73 +202,6 @@
             } else {
                 backgroundMusic.pause();
             }
-        }
-
-        function showAllStudents() {
-            clearTable();
-            students.forEach(student => addRow(student));
-        }
-
-        function showRankedStudents() {
-            clearTable();
-            let index = 0;
-            function showNext() {
-                if (index < students.length) {
-                    addRow(students[index]);
-                    index++;
-                    setTimeout(showNext, 5000);
-                }
-            }
-            showNext();
-        }
-
-        function showByRank() {
-            clearTable();
-            let currentRank = 1;
-            const maxRank = Math.max(...students.map(s => s.rank));
-
-            function showNextRank() {
-                clearTable();
-                const filteredStudents = students.filter(student => student.rank === currentRank);
-                filteredStudents.forEach(student => addRow(student));
-
-                let countdown = 5;
-                countdownDisplay.textContent = `المركز ${currentRank}: سيتم عرض المركز التالي خلال ${countdown} ثواني.`;
-
-                const countdownInterval = setInterval(() => {
-                    countdown--;
-                    if (countdown > 0) {
-                        countdownDisplay.textContent = `المركز ${currentRank}: سيتم عرض المركز التالي خلال ${countdown} ثواني.`;
-                    } else {
-                        clearInterval(countdownInterval);
-                        if (currentRank < maxRank) {
-                            currentRank++;
-                            showNextRank();
-                        } else {
-                            countdownDisplay.textContent = "تم عرض جميع المراكز.";
-                        }
-                    }
-                }, 1000);
-            }
-
-            showNextRank();
-        }
-
-        function addRow(student) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><img src="${student.image}" alt="صورة الطالب" style="width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 0 10px rgba(255, 221, 0, 0.7);"></td>
-                <td>${student.name}</td>
-                <td>${student.grade}</td>
-                <td>${student.total}</td>
-                <td>${student.percentage}</td>
-                <td>${student.rank}</td>
-            `;
-            tableBody.appendChild(row);
-        }
-
-        function clearTable() {
-            tableBody.innerHTML = '';
         }
     </script>
 </body>
