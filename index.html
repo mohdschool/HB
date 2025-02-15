@@ -21,7 +21,7 @@
         }
 
         .logo {
-            width: 150px;
+            width: 100px; /* تقليل حجم الشعار */
             height: auto;
             border-radius: 50%;
             box-shadow: 0 4px 20px rgba(255, 221, 0, 0.6);
@@ -29,30 +29,32 @@
 
         .header-container {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 20px;
+            flex-direction: column; /* تغيير الاتجاه إلى عمودي على الأجهزة المحمولة */
+            align-items: center;
+            padding: 10px;
             position: relative;
         }
 
         .greeting-box {
-            width: 300px;
-            height: 150px;
+            width: 90%; /* جعل العرض متناسبًا مع الشاشة */
+            height: auto; /* جعل الارتفاع تلقائيًا */
             background-color: rgba(255, 255, 255, 0.1);
             border: 2px solid #ffdd00;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             position: relative;
+            margin: 10px 0; /* إضافة هامش بين العناصر */
         }
 
         .greeting-text {
-            position: absolute;
+            position: relative;
             width: 100%;
-            font-size: 1rem;
+            font-size: 0.9rem; /* تقليل حجم الخط */
             color: #ffdd00;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
             animation: scrollText 15s linear infinite;
+            padding: 10px; /* إضافة padding للنص */
         }
 
         @keyframes scrollText {
@@ -62,20 +64,20 @@
 
         .controls {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: center;
-            margin: 20px;
+            margin: 10px;
         }
 
         #audioButton {
             background-color: #1e3c72;
             color: #ffdd00;
             border: none;
-            padding: 10px 20px;
-            font-size: 1.2rem;
+            padding: 8px 16px; /* تقليل حجم الزر */
+            font-size: 1rem; /* تقليل حجم الخط */
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: none; /* سيتم تفعيله برمجيًا */
+            display: none;
         }
 
         #audioButton:hover {
@@ -83,17 +85,17 @@
         }
 
         .buttons {
-            margin: 20px 0;
+            margin: 10px 0;
         }
 
         .buttons button {
             background-color: #ffdd00;
             color: #1e3c72;
             border: none;
-            padding: 10px 20px;
-            font-size: 1.2rem;
+            padding: 8px 16px; /* تقليل حجم الأزرار */
+            font-size: 1rem; /* تقليل حجم الخط */
             cursor: pointer;
-            margin: 0 10px;
+            margin: 5px; /* تقليل الهامش بين الأزرار */
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -103,18 +105,20 @@
         }
 
         table {
-            width: 85%;
-            margin: 20px auto;
+            width: 95%; /* جعل الجدول يأخذ عرضًا أقل */
+            margin: 10px auto;
             border-collapse: collapse;
             background-color: rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border-radius: 10px;
+            overflow-x: auto; /* جعل الجدول قابل للتمرير أفقيًا */
+            display: block; /* لجعل overflow-x يعمل */
         }
 
         th, td {
-            padding: 15px;
+            padding: 10px; /* تقليل padding */
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1rem; /* تقليل حجم الخط */
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
@@ -134,7 +138,7 @@
         tr td:nth-child(3) {
             font-weight: bold;
             color: #ffdd00;
-            font-size: 1.5rem;
+            font-size: 1.2rem; /* تقليل حجم الخط */
             text-shadow: 0 0 10px #ffdd00, 0 0 20px #ffdd00, 0 0 30px #ffdd00;
             animation: glowing 2s infinite ease-in-out;
         }
@@ -145,7 +149,6 @@
             100% { text-shadow: 0 0 5px #ffdd00, 0 0 10px #ffdd00, 0 0 15px #ffdd00; }
         }
 
-        /* حاوية الوقت المتبقي */
         .countdown-container {
             background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
@@ -157,8 +160,41 @@
 
         .countdown-container p {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1rem; /* تقليل حجم الخط */
             color: #ffdd00;
+        }
+
+        /* Media Queries للأجهزة المحمولة */
+        @media (max-width: 768px) {
+            .logo {
+                width: 80px; /* تقليل حجم الشعار أكثر */
+            }
+
+            .greeting-box {
+                width: 100%; /* جعل العرض كاملًا */
+            }
+
+            .greeting-text {
+                font-size: 0.8rem; /* تقليل حجم الخط أكثر */
+            }
+
+            .buttons button {
+                padding: 6px 12px; /* تقليل حجم الأزرار أكثر */
+                font-size: 0.9rem; /* تقليل حجم الخط أكثر */
+            }
+
+            table {
+                width: 100%; /* جعل الجدول يأخذ العرض الكامل */
+            }
+
+            th, td {
+                padding: 8px; /* تقليل padding أكثر */
+                font-size: 0.9rem; /* تقليل حجم الخط أكثر */
+            }
+
+            tr td:nth-child(3) {
+                font-size: 1rem; /* تقليل حجم الخط أكثر */
+            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
