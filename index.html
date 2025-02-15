@@ -21,7 +21,7 @@
         }
 
         .logo {
-            width: 100px; /* تقليل حجم الشعار */
+            width: 100px;
             height: auto;
             border-radius: 50%;
             box-shadow: 0 4px 20px rgba(255, 221, 0, 0.6);
@@ -29,32 +29,32 @@
 
         .header-container {
             display: flex;
-            flex-direction: column; /* تغيير الاتجاه إلى عمودي على الأجهزة المحمولة */
+            flex-direction: column;
             align-items: center;
             padding: 10px;
             position: relative;
         }
 
         .greeting-box {
-            width: 90%; /* جعل العرض متناسبًا مع الشاشة */
-            height: auto; /* جعل الارتفاع تلقائيًا */
+            width: 90%;
+            height: auto;
             background-color: rgba(255, 255, 255, 0.1);
             border: 2px solid #ffdd00;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             position: relative;
-            margin: 10px 0; /* إضافة هامش بين العناصر */
+            margin: 10px 0;
         }
 
         .greeting-text {
             position: relative;
             width: 100%;
-            font-size: 0.9rem; /* تقليل حجم الخط */
+            font-size: 1rem; /* تكبير الخط */
             color: #ffdd00;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
             animation: scrollText 15s linear infinite;
-            padding: 10px; /* إضافة padding للنص */
+            padding: 10px;
         }
 
         @keyframes scrollText {
@@ -73,8 +73,8 @@
             background-color: #1e3c72;
             color: #ffdd00;
             border: none;
-            padding: 8px 16px; /* تقليل حجم الزر */
-            font-size: 1rem; /* تقليل حجم الخط */
+            padding: 8px 16px;
+            font-size: 1rem;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             display: none;
@@ -92,10 +92,10 @@
             background-color: #ffdd00;
             color: #1e3c72;
             border: none;
-            padding: 8px 16px; /* تقليل حجم الأزرار */
-            font-size: 1rem; /* تقليل حجم الخط */
+            padding: 8px 16px;
+            font-size: 1rem; /* تكبير الخط */
             cursor: pointer;
-            margin: 5px; /* تقليل الهامش بين الأزرار */
+            margin: 5px;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -105,20 +105,20 @@
         }
 
         table {
-            width: 95%; /* جعل الجدول يأخذ عرضًا أقل */
+            width: 95%;
             margin: 10px auto;
             border-collapse: collapse;
             background-color: rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border-radius: 10px;
-            overflow-x: auto; /* جعل الجدول قابل للتمرير أفقيًا */
-            display: block; /* لجعل overflow-x يعمل */
+            overflow-x: auto;
+            display: block;
         }
 
         th, td {
-            padding: 10px; /* تقليل padding */
+            padding: 10px;
             text-align: center;
-            font-size: 1rem; /* تقليل حجم الخط */
+            font-size: 1rem; /* تكبير الخط */
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
@@ -138,7 +138,7 @@
         tr td:nth-child(3) {
             font-weight: bold;
             color: #ffdd00;
-            font-size: 1.2rem; /* تقليل حجم الخط */
+            font-size: 1.2rem; /* تكبير الخط */
             text-shadow: 0 0 10px #ffdd00, 0 0 20px #ffdd00, 0 0 30px #ffdd00;
             animation: glowing 2s infinite ease-in-out;
         }
@@ -160,40 +160,72 @@
 
         .countdown-container p {
             margin: 0;
-            font-size: 1rem; /* تقليل حجم الخط */
+            font-size: 1rem; /* تكبير الخط */
             color: #ffdd00;
         }
 
-        /* Media Queries للأجهزة المحمولة */
+        .invitation-message {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .invitation-message p {
+            font-size: 1.2rem; /* تكبير الخط */
+            color: #ffdd00;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            background-color: #ffdd00;
+            color: #1e3c72;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #e6c200;
+        }
+
         @media (max-width: 768px) {
             .logo {
-                width: 80px; /* تقليل حجم الشعار أكثر */
+                width: 80px;
             }
 
             .greeting-box {
-                width: 100%; /* جعل العرض كاملًا */
+                width: 100%;
             }
 
             .greeting-text {
-                font-size: 0.8rem; /* تقليل حجم الخط أكثر */
+                font-size: 0.9rem;
             }
 
             .buttons button {
-                padding: 6px 12px; /* تقليل حجم الأزرار أكثر */
-                font-size: 0.9rem; /* تقليل حجم الخط أكثر */
+                padding: 6px 12px;
+                font-size: 0.9rem;
             }
 
             table {
-                width: 100%; /* جعل الجدول يأخذ العرض الكامل */
+                width: 100%;
             }
 
             th, td {
-                padding: 8px; /* تقليل padding أكثر */
-                font-size: 0.9rem; /* تقليل حجم الخط أكثر */
+                padding: 8px;
+                font-size: 0.9rem;
             }
 
             tr td:nth-child(3) {
-                font-size: 1rem; /* تقليل حجم الخط أكثر */
+                font-size: 1rem;
             }
         }
     </style>
@@ -207,7 +239,6 @@
     </audio>
 
     <div class="header-container">
-        <!-- الحاوية على يسار الشعار -->
         <div class="greeting-box">
             <div class="countdown-container">
                 <p>حفل تكريم الطلبة المجيدين بتاريخ 20/2/2025م</p>
@@ -215,10 +246,8 @@
             </div>
         </div>
 
-        <!-- الشعار -->
         <img src="https://a.top4top.io/p_3316yh3l21.jpg" alt="شعار المدرسة" class="logo">
 
-        <!-- الحاوية على يمين الشعار -->
         <div class="greeting-box">
             <div class="greeting-text">
                 تهنئ مدرسة محمد بن سليمان الغافري طلابها المجيدين وتتمنى لهم دوام التفوق والنجاح في مسيرتهم العلمية والمستقبلية.
@@ -236,6 +265,18 @@
     <div class="buttons">
         <button onclick="fetchAndShowStudents()">عرض جميع الأسماء</button>
         <button onclick="showStudentsByRank()">عرض الأسماء حسب المركز</button>
+        <button onclick="showInvitation()">دعوة لأولياء أمور الطلبة</button>
+    </div>
+
+    <div class="invitation-message" id="invitationMessage">
+        <p>
+            السادة أولياء أمور الطلبة،<br><br>
+            يسرنا دعوتكم لحضور حفل تكريم الطلبة المجيدين الذي سيقام يوم الخميس الموافق 20 فبراير 2025م.<br>
+            نتمنى مشاركتكم في هذا اليوم الخاص لتكريم أبنائنا المتفوقين.<br><br>
+            مع خالص الشكر والتقدير،<br>
+            إدارة مدرسة محمد بن سليمان الغافري.
+        </p>
+        <button class="back-button" onclick="hideInvitation()">العودة إلى الأسماء</button>
     </div>
 
     <table id="studentsTable">
@@ -257,11 +298,11 @@
     <script>
         const backgroundMusic = document.getElementById('backgroundMusic');
         const audioButton = document.getElementById('audioButton');
+        const invitationMessage = document.getElementById('invitationMessage');
 
-        // تشغيل الموسيقى عند الضغط على زر "عرض جميع الأسماء"
         function fetchAndShowStudents() {
             backgroundMusic.play();
-            audioButton.style.display = 'block'; // إظهار زر التحكم بالموسيقى
+            audioButton.style.display = 'block';
 
             fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQVaGsAkcGBg4m29zjUPN-FzKY4ti2yJVjPteA3PxFlGgmt3yX61VoRpiTbOGysUmRs3n22rDhX9Xlv/pub?gid=1364794714&single=true&output=csv')
                 .then(response => response.text())
@@ -319,6 +360,16 @@
                     rank++;
                 }
             }, 5000);
+        }
+
+        function showInvitation() {
+            invitationMessage.style.display = 'block';
+            document.getElementById('studentsTable').style.display = 'none';
+        }
+
+        function hideInvitation() {
+            invitationMessage.style.display = 'none';
+            document.getElementById('studentsTable').style.display = 'table';
         }
 
         const eventDate = new Date('February 20, 2025 07:10:00').getTime();
